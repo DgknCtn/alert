@@ -29,7 +29,7 @@ export function buildDailySummaryMessage(items: WorkItemWithAssignee[]): string 
 
   lines.push(`Toplam açık iş: ${items.length}`);
   lines.push('');
-  lines.push('Detaylar için uygulamayı aç.');
+  lines.push('Detaylar için uygulamayı aç: https://vanthalert.vercel.app/');
 
   return lines.join('\n');
 }
