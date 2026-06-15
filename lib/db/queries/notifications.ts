@@ -15,7 +15,7 @@ export async function getNotificationSettings(workspaceId: string) {
   return {
     ...settings,
     telegramBotToken: settings.telegramBotTokenEncrypted
-      ? decrypt(settings.telegramBotTokenEncrypted)
+      ? (() => { try { return decrypt(settings.telegramBotTokenEncrypted!); } catch { return null; } })()
       : null,
     telegramBotTokenEncrypted: undefined,
   };
@@ -73,7 +73,7 @@ export async function getAllEnabledNotificationSettings() {
   return rows.map((row) => ({
     ...row,
     telegramBotToken: row.telegramBotTokenEncrypted
-      ? decrypt(row.telegramBotTokenEncrypted)
+      ? (() => { try { return decrypt(row.telegramBotTokenEncrypted!); } catch { return null; } })()
       : null,
   }));
 }
