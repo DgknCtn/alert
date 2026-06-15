@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllEnabledNotificationSettings } from '@/lib/db/queries/notifications';
 import { getOpenWorkItems } from '@/lib/db/queries/work-items';
-import { buildDailySummaryMessage, isTimeToSend } from '@/lib/daily-summary';
+import { buildDailySummaryMessage } from '@/lib/daily-summary';
 import { sendTelegramMessage } from '@/lib/telegram';
 
 export async function POST(req: NextRequest) {
@@ -14,10 +14,6 @@ export async function POST(req: NextRequest) {
   const results: Array<{ workspaceId: string; sent: boolean; error?: string }> = [];
 
   for (const settings of enabledWorkspaces) {
-    if (!isTimeToSend(settings.timezone, settings.dailySummaryTime)) {
-      continue;
-    }
-
     if (!settings.telegramBotToken || !settings.telegramChatId) {
       results.push({ workspaceId: settings.workspaceId, sent: false, error: 'Missing credentials' });
       continue;
